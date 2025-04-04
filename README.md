@@ -1,6 +1,4 @@
-# 🚀 Central de Atendimento - Laravel 12 + Inertia + Vue + Tailwind + TypeScript
-
-Este projeto é um sistema de **central de atendimento** que utiliza **Laravel 12** no backend e **Vue.js com Inertia.js** no frontend. Ele permite gerenciar usuários, permissões, documentos e integrar **WhatsApp Business** para atendimento.
+# 🚀 Lagoa Sport
 
 ## 📌 Tecnologias Utilizadas
 
