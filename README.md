@@ -13,7 +13,26 @@
 
 ---
 
-## ⚙️ **Instalação e Configuração**
+## ⚙️ **Configuração**
+### 1️⃣ **Instalar as dependencias do laravel**
+# Use o comando no PowerShell como administrador
+```sh
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
+```
+
+### 2️⃣ **Instale o Node.js**
+# Acesse o Site e faça a instalação
+```sh
+https://nodejs.org/pt
+```
+
+### 3️⃣ **Instale o Herd**
+# Acesse o Site e faça a instalação
+```sh
+[https://nodejs.org/pt](https://herd.laravel.com/windows)
+```
+
+## ⚙️ **Instalação**
 
 ### 1️⃣ **Clone o repositório**
 ```sh
