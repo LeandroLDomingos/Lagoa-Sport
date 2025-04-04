@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
-            $table->enum('status', ['active', 'inactive', 'pending', 'blocked']);
+            $table->enum('status', ['active', 'inactive', 'pending','is_analising', 'blocked']);
             $table->timestamp('approved_at')->nullable()->after('status');
             $table->string('identity_document')->nullable()->after('approved_at');
             $table->string('residence_proof')->nullable()->after('identity_document');
