@@ -96,7 +96,6 @@ Após a aprovação de um administrador, eles terão acesso ao sistema.
 ✅ Upload de documentos  
 ✅ Middleware de status do usuário  
 ⬜ Notificações por e-mail  
-⬜ Integração completa com WhatsApp Business  
 
 ---
 
