@@ -13,8 +13,14 @@ class CheckUserValidation
      * Rotas que usuários pendentes podem acessar (como envio de documentos e logout).
      */
     protected $allowedRoutes = [
+        'profile.edit',
+        'profile.update',
+        'profile.destroy',
+        'password.edit',
+        'password.update',
         'documents.create',
         'documents.store',
+        'appearance',
         'logout',
     ];
 
@@ -27,12 +33,11 @@ class CheckUserValidation
         // Se o usuário não estiver autenticado, não precisa validar o status
         if (!$user) {
             return $next($request);
-        }
-        else {
+        } else {
             $user->load('permissions', 'roles');
         }
-        
-        
+
+
         foreach ($user->roles as $role) {
             if (!$role->level > 2) {
                 return $next($request);

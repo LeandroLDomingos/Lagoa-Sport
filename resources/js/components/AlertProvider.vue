@@ -1,28 +1,19 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue';
-import { Alert } from '@shadcn-vue/alert';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { usePage } from '@inertiajs/vue3';
+import { AlertCircle } from 'lucide-vue-next'
 
-// Estado para o erro
-const errorMessage = ref(null);
-
-// Fornece o estado de erro para os componentes filhos
-provide('setError', (message) => {
-    errorMessage.value = message;
-});
-
-// Função para limpar o erro
-const clearError = () => {
-    errorMessage.value = null;
-};
+const { props } = usePage();
 </script>
 
-<style scoped>
-/* Estilo opcional para centralizar o alerta na tela */
-</style>
 
 <template>
-    <div v-if="errorMessage" class="absolute top-0 left-0 right-0 p-4 z-50">
-        <Alert :variant="'destructive'" :title="'Erro'" :description="errorMessage" @close="clearError" />
-    </div>
-    <slot />
+    <!-- Exibe alerta usando shadcn-vue caso exista flash.error -->
+    <Alert v-if="props.flash?.error" variant="destructive" class="mb-4">
+        <AlertCircle class="w-4 h-4" />
+        <AlertTitle>Erro</AlertTitle>
+        <AlertDescription>
+            {{ props.flash.error }}
+        </AlertDescription>
+    </Alert>
 </template>
