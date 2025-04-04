@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(), // E-mail verificado
             'password' => Hash::make('*mg2011tiuserBR'), // Senha do admin
             'cpf' => 'test', // CPF (se necessário)
-            'status' => 'active', // Status do usuário (ativo)
+            'status' => 'pending', // Status do usuário (ativo)
             'created_at' => now(),
             'updated_at' => now(),
         ]);

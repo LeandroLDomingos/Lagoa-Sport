@@ -25,7 +25,7 @@ class ACLMiddleware
         $hasPermission = $user->permissions->contains('route_name', $routeName);
 
         if (!$hasPermission) {
-            return redirect()->route('dashboard')
+            return redirect()->back()
                 ->with('flash.error', 'Você não tem permissão para acessar esta rota.');
         }
         

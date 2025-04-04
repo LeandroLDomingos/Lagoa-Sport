@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\ACLMiddleware;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
