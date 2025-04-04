@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->enum('status', ['active', 'inactive', 'pending', 'blocked']);
+            $table->timestamp('approved_at')->nullable()->after('status');
+            $table->string('identity_document')->nullable()->after('approved_at');
+            $table->string('residence_proof')->nullable()->after('identity_document');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -53,6 +56,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['approved_at', 'identity_document', 'residence_proof']);
+        });
+
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
