@@ -29,6 +29,7 @@ const submit = () => {
 
 <template>
     <AuthBase title="Faça login na sua conta" description="Insira seu e-mail e senha abaixo para fazer login">
+
         <Head title="Entrar" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -38,36 +39,23 @@ const submit = () => {
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Endereço de e-mail</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="email"
-                        v-model="form.email"
-                        placeholder="email@exemplo.com"
-                    />
+                    <Label for="email">Endereço de e-mail ou CPF</Label>
+                    <Input id="email" type="text" required autofocus :tabindex="1" autocomplete="email"
+                        v-model="form.email" placeholder="email@exemplo.com ou 12345678900" />
                     <InputError :message="form.errors.email" />
                 </div>
+
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">Senha</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
+                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm"
+                            :tabindex="5">
                             Esqueceu a senha?
                         </TextLink>
                     </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        :tabindex="2"
-                        autocomplete="current-password"
-                        v-model="form.password"
-                        placeholder="Senha"
-                    />
+                    <Input id="password" type="password" required :tabindex="2" autocomplete="current-password"
+                        v-model="form.password" placeholder="Senha" />
                     <InputError :message="form.errors.password" />
                 </div>
 

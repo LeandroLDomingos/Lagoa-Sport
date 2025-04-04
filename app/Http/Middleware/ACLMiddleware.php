@@ -2,18 +2,20 @@
 
 namespace App\Http\Middleware;
 
-use App\Repositories\UserRepository;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;  
 use Symfony\Component\HttpFoundation\Response;
 
 class ACLMiddleware
 {
-    public function __construct(private UserRepository $userRepository)
+    // O construtor não precisa ser protected, a menos que tenha algo específico.
+    public function __construct()
     {
+        // Caso queira injeção de dependência do repositório, adicione aqui
     }
-
 
     /**
      * Handle an incoming request.
@@ -22,31 +24,32 @@ class ACLMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = $request->user(); // Obtém o usuário autenticado
-    
-        // Se o usuário for null (não autenticado), retorna erro
-        if (!$user) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Unauthenticated'], 401);
-            }
-    
-            abort(403, 'Unauthenticated');
-        }
-    
+        // Recupera o usuário autenticado
+        $user = Auth::user()->load('permissions', 'roles');
+
+        // Recupera o nome da rota atual
         $routeName = Route::currentRouteName();
-    
-        if (!$this->userRepository->hasPermissions($user, $routeName)) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Not authorized'], 403);
+
+        // Verifica se o usuário tem um papel de "admin"
+        foreach ($user->roles as $role) {
+            if ($role->name === 'admin') {
+                // Caso o usuário tenha a role "admin", ele tem acesso completo
+                return $next($request);
             }
-    
-            abort(403, 'Not authorized');
         }
-    
-        // Adiciona as permissões do usuário ao request (para Inertia)
-        $request->attributes->set('permissions', $this->userRepository->getUserPermissions($user));
-    
+
+        // Caso o usuário não tenha a role "admin", verificamos as permissões
+        $hasPermission = $user->permissions->contains('route_name', $routeName);
+
+        if (!$hasPermission) {
+            // Se não tiver a permissão necessária, redireciona ou retorna uma resposta de erro
+            return response()->json(['message' => 'Você não tem permissão para acessar esta rota.'], 403);
+        }
+
+        // Adiciona as permissões do usuário ao request (caso precise em alguma outra parte da aplicação)
+        $request->attributes->set('permissions', $user->permissions);
+
+        // Permite o próximo middleware/controle
         return $next($request);
     }
-    
 }

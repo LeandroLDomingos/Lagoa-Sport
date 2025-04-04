@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,14 +33,71 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'cpf' => [
+                'required',
+                Rule::unique(table: 'users'),
+                'cpf'
+            ],
+            'zip_code' => [
+                'required',
+                'regex:/^\d{5}-\d{3}$|^\d{8}$/',
+            ],
+            'address' => [
+                'required',
+                'min:3',
+                'max:255',
+            ],
+            'neighborhood' => [
+                'required',
+                'min:3',
+                'max:255',
+            ],
+            'number' => [
+                'required',
+                'numeric'
+            ],
+            'complement' => [
+                'nullable',
+                'min:2',
+                'max:255',
+            ],
+            'city' => [
+                'required',
+                'min:3',
+                'max:255',
+            ],
+            'state' => [
+                'required',
+                'min:2',
+                'max:255',
+            ],
+            'country' => [
+                'required',
+                'min:3',
+                'max:255',
+            ],
+            'status' => [
+                'required',
+                Rule::in(['active', 'inactive', 'pending'])
+            ]
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'cpf' => $request->cpf,
+            'zip_code' => $request->zip_code,
+            'address' => $request->address,
+            'neighborhood' => $request->neighborhood,
+            'number' => $request->number,
+            'complement' => $request->complement,
+            'city' => $request->city,
+            'state' => $request->state,
+            'country' => $request->country,
+            'status'=> $request->status
         ]);
 
         event(new Registered($user));

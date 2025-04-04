@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -22,6 +23,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cpf',
+        'zip_code',
+        'address',
+        'neighborhood',
+        'number',
+        'complement',
+        'city',
+        'state',
+        'country',
+        'status'
     ];
 
     /**
@@ -50,5 +61,26 @@ class User extends Authenticatable
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+
+    protected $keyType = 'string';  // Defina o tipo da chave como 'string'
+    public $incrementing = false;  // Impede o Laravel de tentar incrementar a chave (porque é UUID)
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Gerar UUID antes de criar o usuário
+        static::creating(function ($user) {
+            if (empty($user->id)) {
+                $user->id = (string) Str::uuid();  // Gerando UUID
+            }
+        });
     }
 }

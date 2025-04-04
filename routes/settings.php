@@ -6,7 +6,7 @@ use App\Http\Middleware\ACLMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware(['auth', ACLMiddleware::class])->group(function () {
+Route::middleware(['auth', ACLMiddleware::Class])->group(function () {
     Route::redirect('settings', '/settings/profile');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
