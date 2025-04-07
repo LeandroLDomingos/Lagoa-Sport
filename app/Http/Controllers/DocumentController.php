@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,21 +21,36 @@ class DocumentController extends Controller
         return Inertia::render('documents/Index', compact('documents'));
     }
 
+    public function analising(): Response
+    {
+        $users = User::where('status', 'is_analising')
+            ->with([
+                'documents' ])
+            ->get();
+        return Inertia::render('users/Analising', compact( 'users'));
+    }
+
+    public function is_analising(): Response
+    {
+        $documents = Auth::user()->documents;
+        return Inertia::render('documents/IsAnalising');
+    }
+
     /**
      * Faz o upload dos documentos de identidade e comprovante de residência.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'documents.*.type' => 'required|in:identity,residence_proof',
+            'documents.*.type' => 'required|in:identity,residence_proof,identity-front,identity-back',
             'documents.*.file' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
         $user = Auth::user();
-
-        foreach ($request->file('documents') as $document) {
-            $filePath = $document['file']->store("documents/{$user->id}", 'public');
-
+        $user->update(['status' => 'is_analising']);
+        // Armazena os arquivos no disco 'local', que é privado.
+        foreach ($request->documents as $document) {
+            $filePath = $document['file']->store("documents/{$user->id}", 'local');
             Document::create([
                 'user_id' => $user->id,
                 'type' => $document['type'],
@@ -43,7 +59,8 @@ class DocumentController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('message', 'Documentos enviados para análise.');
+        return redirect()->route('documents.is_analising')
+            ->with('flash.error', 'Seu cadastro está sendo analisado. Por favor, aguarde a validação.');
     }
 
     /**
@@ -65,14 +82,17 @@ class DocumentController extends Controller
      */
     public function download(Document $document)
     {
+        // Permite o download se o usuário for o dono do documento ou um admin.
         if (Auth::id() !== $document->user_id && !Auth::user()->isAdmin()) {
             abort(403);
         }
 
-        if (!Storage::disk('public')->exists($document->file_path)) {
+        // Verifica no disco privado (local) se o arquivo existe.
+        if (!Storage::disk('local')->exists($document->file_path)) {
             abort(404, 'Arquivo não encontrado.');
         }
 
-        return Storage::download("public/{$document->file_path}");
+        // Realiza o download do arquivo do disco 'local'.
+        return Storage::disk('local')->download($document->file_path);
     }
 }

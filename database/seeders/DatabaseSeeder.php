@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(), // E-mail verificado
             'password' => Hash::make('*mg2011tiuserBR'), // Senha do admin
             'cpf' => 'admin', // CPF (se necessário)
+            'rg' => 'admin', // CPF (se necessário)
             'status' => 'active', // Status do usuário (ativo)
+            'term' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -34,7 +36,35 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(), // E-mail verificado
             'password' => Hash::make('*mg2011tiuserBR'), // Senha do admin
             'cpf' => 'test', // CPF (se necessário)
+            'rg' => 'test', // CPF (se necessário)
             'status' => 'pending', // Status do usuário (ativo)
+            'term' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $test2 = User::create([
+            'id' => \Str::uuid(),  // Gera um UUID para o usuário
+            'name' => 'Tester2', // Nome do admin
+            'email' => 'test2@lagoasanta.mg.bov.br', // E-mail do admin
+            'email_verified_at' => now(), // E-mail verificado
+            'password' => Hash::make('*mg2011tiuserBR'), // Senha do admin
+            'cpf' => 'test2', // CPF (se necessário)
+            'rg' => 'test2', // CPF (se necessário)
+            'status' => 'pending', // Status do usuário (ativo)
+            'term' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $test3 = User::create([
+            'id' => \Str::uuid(),  // Gera um UUID para o usuário
+            'name' => 'Tester3', // Nome do admin
+            'email' => 'test3@lagoasanta.mg.bov.br', // E-mail do admin
+            'email_verified_at' => now(), // E-mail verificado
+            'password' => Hash::make('*mg2011tiuserBR'), // Senha do admin
+            'cpf' => 'test3', // CPF (se necessário)
+            'rg' => 'test3', // CPF (se necessário)
+            'status' => 'pending', // Status do usuário (ativo)
+            'term' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -69,5 +99,7 @@ class DatabaseSeeder extends Seeder
         // Atribuindo o papel 'admin' ao usuário criado
         $admin->roles()->attach($adminRole);
         $test->roles()->attach($guestRole);
+        $test2->roles()->attach($guestRole);
+        $test3->roles()->attach($guestRole);
     }
 }

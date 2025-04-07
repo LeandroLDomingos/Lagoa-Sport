@@ -191,6 +191,8 @@ return [
     */
 
     'attributes' => [
+        'terms'     => 'termos',
+        'birthdate' => 'data de nascimento',
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',

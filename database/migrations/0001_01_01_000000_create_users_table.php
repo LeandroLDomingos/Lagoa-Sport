@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('cpf')->unique()->nullable();
+            $table->string('cpf')->unique();
+            $table->string('rg')->unique();
             $table->bigInteger('zip_code')->nullable();
             $table->string('address')->nullable();
             $table->string('neighborhood')->nullable();
@@ -28,8 +29,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->enum('status', ['active', 'inactive', 'pending','is_analising', 'blocked']);
             $table->timestamp('approved_at')->nullable()->after('status');
-            $table->string('identity_document')->nullable()->after('approved_at');
-            $table->string('residence_proof')->nullable()->after('identity_document');
+            $table->boolean('term');            
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

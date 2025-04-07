@@ -11,9 +11,11 @@ const { props } = usePage();
     <!-- Exibe alerta usando shadcn-vue caso exista flash.error -->
     <Alert v-if="props.flash?.error" variant="destructive" class="mb-4">
         <AlertCircle class="w-4 h-4" />
-        <AlertTitle>Erro</AlertTitle>
+        <AlertTitle>Alerta</AlertTitle>
         <AlertDescription>
             {{ props.flash.error }}
         </AlertDescription>
     </Alert>
+
+    
 </template>

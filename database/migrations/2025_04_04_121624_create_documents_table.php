@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
-            $table->string('type'); // 'identity' ou 'residence_proof'
+            $table->string('type');
             $table->string('file_path');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();

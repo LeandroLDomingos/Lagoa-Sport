@@ -23,7 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rg',
         'cpf',
+        'birthdate',
         'zip_code',
         'address',
         'neighborhood',
@@ -32,7 +34,8 @@ class User extends Authenticatable
         'city',
         'state',
         'country',
-        'status'
+        'status',
+        'term'
     ];
 
     /**
@@ -68,10 +71,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
 
     protected $keyType = 'string';  // Defina o tipo da chave como 'string'
     public $incrementing = false;  // Impede o Laravel de tentar incrementar a chave (porque é UUID)
-    
+
     protected static function boot()
     {
         parent::boot();

@@ -20,6 +20,7 @@ class CheckUserValidation
         'password.update',
         'documents.create',
         'documents.store',
+        'documents.is_analising',
         'appearance',
         'logout',
     ];
@@ -51,6 +52,14 @@ class CheckUserValidation
             if (!in_array($request->route()->getName(), $this->allowedRoutes)) {
                 return redirect()->route('documents.index')
                     ->with('flash.error', 'Seu cadastro está pendente. Por favor, envie seus documentos para validação.');
+            }
+        }
+
+        if (in_array($user->status, ['is_analising'])) {
+            // Verifica se a rota atual não está na lista de rotas permitidas
+            if (!in_array($request->route()->getName(), $this->allowedRoutes)) {
+                return redirect()->route('documents.is_analising')
+                    ->with('flash.error', 'Seu cadastro está sendo analisado. Por favor, aguarde a validação.');
             }
         }
 
