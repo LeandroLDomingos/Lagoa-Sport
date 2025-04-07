@@ -32,6 +32,7 @@ class User extends Authenticatable
         'number',
         'complement',
         'city',
+        'approved_at',
         'state',
         'country',
         'status',
