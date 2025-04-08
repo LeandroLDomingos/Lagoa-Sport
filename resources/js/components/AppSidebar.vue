@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar'
 import { type NavItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { PersonStanding, LayoutGrid } from 'lucide-vue-next'
+import { PersonStanding, LayoutGrid, MapPin } from 'lucide-vue-next'
 import AppLogo from './AppLogo.vue'
 import { usePermission } from '@/composables/usePermissions'
 
@@ -26,6 +26,11 @@ const mainNavItems: NavItem[] = [
     href: '/dashboard',
     icon: LayoutGrid,
   },
+  {
+    title: 'Quadras/Locais',
+    href: '/locations',
+    icon: MapPin,
+  }
 ]
 
 // Itens do menu do rodapé (com subitens)
