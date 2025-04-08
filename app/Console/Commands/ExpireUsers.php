@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class ExpireUsers extends Command
 {
     protected $signature = 'users:expire';
-    protected $description = 'Expira usuários aprovados há mais de 6 meses (exceto admin e manager) e exclui documentos de residence_proof';
+    protected $description = 'Expira usuários aprovados há mais de 6 meses (exceto admin e manager)';
 
     public function handle()
     {
@@ -28,27 +28,25 @@ class ExpireUsers extends Command
             })
             ->where('approved_at', '<=', $sixMonthsAgo)
             ->get();
-        
+
         $count = 0;
 
         foreach ($users as $user) {
-            // Excluir documentos do tipo residence_proof
-            $residenceDocs = $user->documents()->where('type', 'residence_proof')->get();
-            foreach ($residenceDocs as $doc) {
-                // Verifica se o arquivo existe no disco 'private' e o exclui fisicamente
-                if (Storage::disk('local')->exists($doc->file_path)) {
-                    Storage::disk('local')->delete($doc->file_path);
-                }
-                // Remove o documento do banco de dados
-                $doc->delete();
+            // Remove documento do tipo residence_proof
+            foreach ($user->documents()->where('type', 'residence_proof')->get() as $document) {
+                Storage::disk('local')->delete($document->file_path);
+                $document->delete();
             }
-            
-            // Atualiza o status do usuário para 'pending' e limpa approved_at
-            $user->update(['status' => 'pending', 'approved_at' => null]);
+
+            $user->update([
+                'status' => 'pending',
+                'approved_at' => null,
+            ]);
+
             $count++;
         }
 
-        $this->info("{$count} usuários expirados (status alterado para 'pending' e approved_at limpo) e documentos de residence_proof excluídos.");
+        $this->info("{$count} usuários expirados e documentos removidos.");
         return 0;
     }
 }

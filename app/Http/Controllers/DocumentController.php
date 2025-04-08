@@ -24,11 +24,23 @@ class DocumentController extends Controller
     public function analising(): Response
     {
         $users = User::where('status', 'is_analising')
-            ->with([
-                'documents' ])
-            ->get();
-        return Inertia::render('users/Analising', compact( 'users'));
+            ->with(['documents']) // Carrega todos os documentos
+            ->get()
+            ->map(function ($user) {
+                // Agrupa por tipo e pega o último de cada
+                $latestDocuments = $user->documents
+                    ->sortByDesc('created_at')
+                    ->unique('type')
+                    ->values();
+    
+                $user->setRelation('documents', $latestDocuments);
+                return $user;
+            });
+    
+        return Inertia::render('users/Analising', compact('users'));
     }
+    
+    
 
     public function is_analising(): Response
     {

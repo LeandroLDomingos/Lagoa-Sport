@@ -4,7 +4,7 @@ return [
     'tasks' => [
         [
             'command' => 'users:expire',
-            'frequency' => 'daily',
+            'frequency' => 'everyMinute',
         ],
     ],
 ];

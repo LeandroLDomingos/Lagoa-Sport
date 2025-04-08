@@ -30,7 +30,7 @@ const footerNavItems: NavItem[] = [
     href: '/users',
     icon: PersonStanding,
     children: [
-      { title: 'Aprovar Usuarios', href: '/users/analising' },
+      { title: 'Aprovar Usuários', href: '/users/analising' },
     ],
   },
 ]

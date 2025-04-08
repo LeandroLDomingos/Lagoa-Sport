@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Enums\UserStatus;
 
 class User extends Authenticatable
 {
@@ -92,4 +93,16 @@ class User extends Authenticatable
             }
         });
     }
+
+
+    public function getStatusLabelAttribute(): string
+    {
+        try {
+            return UserStatus::from($this->status)->label();
+        } catch (\ValueError) {
+            return 'Desconhecido';
+        }
+    }
+    
+
 }
