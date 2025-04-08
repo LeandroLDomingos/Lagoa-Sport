@@ -47,20 +47,32 @@ const closeModal = () => {
 
 const approveDocument = (doc: Document | null) => {
   if (!doc) return
+
   router.post(`/documents/${doc.id}/approve`, {}, {
-    onSuccess: () => closeModal()
+    onSuccess: () => {
+      closeModal()
+      window.location.reload()
+    }
   })
 }
 
 const rejectDocument = (doc: Document | null) => {
   if (!doc) return
   router.post(`/documents/${doc.id}/reject`, {}, {
-    onSuccess: () => closeModal()
+    onSuccess: () => {
+      closeModal()
+      window.location.reload()
+    }
+    
   })
 }
 
-const approveUser = () => {
-  router.post(`/users/${props.user.id}/approve`)
+const approveUser = (user_id: string) => {
+  router.post(`/users/${user_id}/approve`, {}, {
+    onSuccess: () => {
+      window.location.reload()
+    }
+  })
 }
 
 const allDocumentsApproved = computed(() =>
@@ -99,7 +111,7 @@ function isPdf(path: string): boolean {
         class="px-4 py-2 rounded text-white"
         :class="allDocumentsApproved ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'"
         :disabled="!allDocumentsApproved"
-        @click="approveUser"
+        @click="approveUser(user.id)"
       >
         Aprovar Usuário
       </button>

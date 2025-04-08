@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -24,15 +25,13 @@ class DocumentController extends Controller
     public function analising(): Response
     {
         $users = User::where('status', 'is_analising')
-            ->with(['documents']) // Carrega todos os documentos
+            ->with(['documents'])
             ->get()
             ->map(function ($user) {
-                // Agrupa por tipo e pega o último de cada
                 $latestDocuments = $user->documents
                     ->sortByDesc('created_at')
                     ->unique('type')
                     ->values();
-    
                 $user->setRelation('documents', $latestDocuments);
                 return $user;
             });
@@ -40,7 +39,8 @@ class DocumentController extends Controller
         return Inertia::render('users/Analising', compact('users'));
     }
     
-    
+
+
 
     public function is_analising(): Response
     {
@@ -107,4 +107,34 @@ class DocumentController extends Controller
         // Realiza o download do arquivo do disco 'local'.
         return Storage::disk('local')->download($document->file_path);
     }
+
+    public function approve(Document $document): RedirectResponse
+    {
+        $document->update([
+            'status' => 'approved',
+        ]);
+    
+        return to_route('users.analising')->with('success', 'Documento aprovado com sucesso.');
+    }
+    
+    public function reject(Document $document): RedirectResponse
+    {
+        $document->update([
+            'status' => 'rejected',
+        ]);
+    
+        return to_route('users.analising')->with('success', 'Documento reprovado com sucesso.');
+    }
+    
+    public function user_approve(User $user): RedirectResponse
+    {
+        $user->update([
+            'status' => 'active',
+            'approved_at' => now(),
+        ]);
+    
+        return to_route('users.analising')->with('success', 'Usuário aprovado com sucesso.');
+    }
+    
+
 }

@@ -103,6 +103,28 @@ class User extends Authenticatable
             return 'Desconhecido';
         }
     }
-    
+
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        // Se tiver a role 'admin', libera tudo automaticamente
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+        // Verifica permissões diretas
+        $hasDirectPermission = $this->permissions()->where('name', $permission)->exists();
+
+        // Verifica permissões herdadas de roles
+        $hasPermissionViaRole = $this->roles()
+            ->whereHas('permissions', function ($query) use ($permission) {
+                $query->where('name', $permission);
+            })->exists();
+
+        return $hasDirectPermission || $hasPermissionViaRole;
+    }
 
 }
