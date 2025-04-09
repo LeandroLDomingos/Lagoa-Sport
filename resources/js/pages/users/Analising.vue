@@ -7,13 +7,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AlertProvider from '@/components/AlertProvider.vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import DocumentsUserCompont from './DocumentsUserCompont.vue';
+import DocumentsUserComponent from './DocumentsUserComponent.vue';
 
 const page = usePage();
 
 const users = ref(page.props.users);
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Documentos', href: '/documents' },
+    { title: 'Usuários', href: '/documents' },
 ];
 </script>
 
@@ -27,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="px-4 py-6">
             <HeadingSmall title="Autorize usuários"/>
             <div v-for="(user, index) in users" :key="index">
-                <DocumentsUserCompont :user="user" :documents="user.documents" />
+                <DocumentsUserComponent :user="user" :documents="user.documents" />
             </div>
         </div>
     </AppLayout>

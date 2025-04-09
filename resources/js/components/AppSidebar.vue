@@ -30,6 +30,7 @@ const mainNavItems: NavItem[] = [
     title: 'Quadras/Locais',
     href: '/locations',
     icon: MapPin,
+    permission: 'location.index'
   }
 ]
 

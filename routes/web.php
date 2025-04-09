@@ -11,8 +11,6 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware([CheckUserValidation::class])->group(function () {
-
-
     Route::get('dashboard', [DashboardController::class, 'index'])
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
@@ -21,6 +19,12 @@ Route::middleware([CheckUserValidation::class])->group(function () {
     require __DIR__ . '/auth.php';
 
 });
+
+
+Route::middleware([CheckUserValidation::class, ACLMiddleware::class, 'auth'])->group(function () {
+    require __DIR__ .'/locations.php';
+});   
+
 require __DIR__ . '/documents.php';
 
 Route::get('/private-file/{path}', function ($path) {

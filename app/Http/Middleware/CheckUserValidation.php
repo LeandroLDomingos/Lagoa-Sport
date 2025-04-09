@@ -23,6 +23,7 @@ class CheckUserValidation
         'documents.is_analising',
         'appearance',
         'logout',
+        'documents.index',
     ];
 
     /**
