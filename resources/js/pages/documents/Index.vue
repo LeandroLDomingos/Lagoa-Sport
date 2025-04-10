@@ -60,7 +60,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   <AppLayout :breadcrumbs="breadcrumbs">
     <AlertProvider />
 
-    <div class="p-6 bg-white rounded-lg shadow-md">
+    <div class="p-6 rounded-lg shadow-md">
       <HeadingSmall
         title="Envie seus documentos"
         description="Envie seus documentos para análise"

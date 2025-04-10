@@ -24,7 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   <AppLayout :breadcrumbs="breadcrumbs">
     <AlertProvider />
 
-    <div class="p-6 bg-white rounded-lg shadow-md">
+    <div class="p-6 rounded-lg shadow-md">
       <!-- título e botão alinhados -->
       <div class="flex items-center justify-between mb-4">
         <HeadingSmall title="Selecione uma quadra/local" />

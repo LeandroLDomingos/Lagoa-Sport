@@ -43,7 +43,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   <AppLayout :breadcrumbs="breadcrumbs">
     <AlertProvider />
 
-    <div class="p-6 bg-white rounded-lg shadow-md flex flex-col items-center w-full gap-6">
+    <div class="p-6 rounded-lg shadow-md flex flex-col items-center w-full gap-6">
 
       <!-- Carrossel de imagens -->
       <Carousel class="relative w-full max-w-md">

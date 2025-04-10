@@ -85,7 +85,7 @@ function isPdf(path: string): boolean {
 </script>
 
 <template>
-  <div class="mb-6 p-4 border rounded shadow-sm bg-white">
+  <div class="mb-6 p-4 border rounded shadow-sm">
     <h2 class="text-lg font-semibold mb-2">{{ user.name }}</h2>
 
     <ul>
@@ -126,7 +126,7 @@ function isPdf(path: string): boolean {
       v-if="showModal && selectedDocument"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div class="bg-white p-6 rounded shadow-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto relative">
+      <div class="p-6 rounded shadow-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto relative">
         <h3 class="text-xl font-bold mb-4">{{ selectedDocument.type_label }}</h3>
 
         <!-- Endereço apenas para residence_proof -->

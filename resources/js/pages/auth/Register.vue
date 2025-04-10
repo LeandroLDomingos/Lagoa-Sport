@@ -217,7 +217,7 @@ const submit = () => {
 
         <!-- Modal de Termos de Uso -->
         <dialog ref="termsDialog"
-            class="rounded-2xl max-w-2xl w-full p-6 bg-white shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur">
+            class="rounded-2xl max-w-2xl w-full p-6 shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur">
             <h2 class="text-lg font-semibold mb-4">Termos de Uso</h2>
             <div class="text-sm max-h-96 overflow-y-auto space-y-2">
                 <p>Bem-vindo aos nossos Termos de Uso.</p>

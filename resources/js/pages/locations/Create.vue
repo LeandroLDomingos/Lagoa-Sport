@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   <AppLayout :breadcrumbs="breadcrumbs">
     <AlertProvider />
 
-    <div class="p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
+    <div class="p-6 rounded-lg shadow-md flex flex-col items-center">
       <HeadingSmall title="Selecione uma quadra/local" />
 
       <!-- Container do form, centralizado e com largura limitada -->
