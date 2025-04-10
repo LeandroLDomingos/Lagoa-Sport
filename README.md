@@ -36,7 +36,7 @@ https://nodejs.org/pt
 
 ### 1️⃣ **Clone o repositório**
 ```sh
-git clone https://github.com/seu-usuario/seu-projeto.git
+git clone https://github.com/seu-LeandroLDomingos/Lagoa-Sport.git
 cd seu-projeto
 ```
 
