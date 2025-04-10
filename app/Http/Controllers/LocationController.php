@@ -51,4 +51,12 @@ class LocationController extends Controller
             ->with('success', 'Local criado com sucesso!');
     }
 
+    public function appointment($id): Response
+    {
+        $location = Location::with("images")->findOrFail($id);
+
+        // Retorna a view passando os dados da localização
+        return Inertia::render('locations/Appointment', compact('location'));
+    }
+
 }

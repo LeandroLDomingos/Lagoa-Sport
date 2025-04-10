@@ -1,46 +1,47 @@
 <script setup lang="ts">
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
+import Button from '@/components/ui/button/Button.vue'
 
-interface Document {
+interface Images {
   id: number
-  file_path: string
-  type: string
-  status: string
-  status_label: string
-  type_label: string
+  name: string
+  image: string
+
 }
 
 interface Location {
+  id: string
   name: string
-  email: string
-  cpf: string
+  address: string
 }
 
 const props = defineProps<{
   location: Location
-  documents: Document[]
+  images: Images[]
 }>()
 
 </script>
 
 <template>
-    <Card>
-        <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
-        </CardHeader>
-        <CardContent>
-            Card Content
-        </CardContent>
-        <CardFooter>
-            Card Footer
-        </CardFooter>
-    </Card>
+  <Card>
+    <CardHeader>
+      <img :src="images[0].image" alt="" class="rounded-md border-2 border-black-700">
+    </CardHeader>
+    <CardContent>
+      <CardTitle>{{ location.name }}</CardTitle>
+      <CardDescription>{{ location.address }}</CardDescription>
+    </CardContent>
+    <CardFooter>
+      <Button>
+        <a :href="`/locations/${location.id}`">Agendar</a>
+      </Button>
+    </CardFooter>
+  </Card>
 </template>
