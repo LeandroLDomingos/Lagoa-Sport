@@ -20,30 +20,27 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
+
   <Head title="Quadras/Locais" />
   <AppLayout :breadcrumbs="breadcrumbs">
     <AlertProvider />
 
     <div class="p-6 rounded-lg shadow-md">
-      <!-- título e botão alinhados -->
       <div class="flex items-center justify-between mb-4">
         <HeadingSmall title="Selecione uma quadra/local" />
-        <!-- só mostra se can -->
         <Button v-if="can('create_locations')" as-child>
-            <a href="/locations/create">
-                Adicionar Local
-            </a>
+          <a href="/locations/create">
+            Adicionar Local
+          </a>
         </Button>
       </div>
 
-      <div class="p-5 grid grid-cols-4 gap-4">
-        <div v-for="(location, index) in locations" :key="index">
-          <LocationComponent
-            :location="location"
-            :images="location.images"
-          />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div v-for="(location, index) in locations" :key="index" class="h-full">
+          <LocationComponent :location="location" :images="location.images" :url="`/locations/${location.id}`" class="h-full" />
         </div>
       </div>
+
     </div>
   </AppLayout>
 </template>

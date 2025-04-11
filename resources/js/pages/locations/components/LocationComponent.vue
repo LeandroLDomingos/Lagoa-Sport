@@ -8,40 +8,49 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Button from '@/components/ui/button/Button.vue'
+import { Location, LocationImage } from '@/types';
 
-interface Images {
-  id: number
-  name: string
-  image: string
 
-}
 
-interface Location {
-  id: string
-  name: string
-  address: string
-}
 
 const props = defineProps<{
   location: Location
-  images: Images[]
+  images: LocationImage[]
+  url: String
 }>()
 
 </script>
 
 <template>
   <Card>
-    <CardHeader>
-      <img :src="images[0].image" alt="" class="rounded-md border-2 border-black-700">
+    <CardHeader class="p-0">
+      <div class="aspect-[16/9] w-full overflow-hidden rounded-t-md">
+        <img
+          v-if="images[0]?.image"
+          :src="images[0].image"
+          alt=""
+          class="w-full h-full object-cover"
+        />
+        <img
+          v-else
+          src="/default.png"
+          alt="Imagem padrão"
+          class="w-full h-full object-cover"
+        />
+      </div>
     </CardHeader>
-    <CardContent>
-      <CardTitle>{{ location.name }}</CardTitle>
+
+    <CardContent class="mt-3">
+      <CardTitle class="text-xl font-semibold leading-none tracking-tight">{{ location.name }}</CardTitle>
       <CardDescription>{{ location.address }}</CardDescription>
     </CardContent>
+
     <CardFooter>
+      <a :href="`${url}`">
       <Button>
-        <a :href="`/locations/${location.id}`">Agendar</a>
-      </Button>
+          Agendar
+        </Button>
+      </a>
     </CardFooter>
   </Card>
 </template>

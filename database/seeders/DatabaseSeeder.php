@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Location;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -101,5 +102,44 @@ class DatabaseSeeder extends Seeder
         $test->roles()->attach($guestRole);
         $test2->roles()->attach($guestRole);
         $test3->roles()->attach($guestRole);
+
+
+        $locations = [
+            [
+                'name' => 'Areião - Futebol de Areia',
+                'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
+                'images' => ['locations/Areião - Futebol de Areia.jpg'],
+            ],
+            [
+                'name' => 'Areião - Futevolei e Volei de Praia',
+                'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
+                'images' => ['locations/Areião - Futevolei e Volei de Praia.jpg'],
+            ],
+            [
+                'name' => 'Areião - Quadra 3 Peteca',
+                'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
+                'images' => ['locations/Areião - Quadra 3 Peteca.jpg'],
+            ],
+            [
+                'name' => 'Areião - Quadra 4 Peteca',
+                'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
+                'images' => ['locations/Areião - Quadra 4 Peteca.jpg'],
+            ],
+            
+        ];
+
+        foreach ($locations as $location) {
+            $loc = Location::create([
+                'name' => $location['name'],
+                'address' => $location['address'],
+            ]);
+
+            // Supondo que exista uma relação hasMany chamada "images"
+            foreach ($location['images'] as $imagePath) {
+                $loc->images()->create([
+                    'image' => $imagePath,
+                ]);
+            }
+        }
     }
 }

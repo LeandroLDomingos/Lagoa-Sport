@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar'
 import { type NavItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { PersonStanding, LayoutGrid, MapPin } from 'lucide-vue-next'
+import { PersonStanding, LayoutGrid, MapPin, Clock } from 'lucide-vue-next'
 import AppLogo from './AppLogo.vue'
 import { usePermission } from '@/composables/usePermissions'
 
@@ -30,7 +30,13 @@ const mainNavItems: NavItem[] = [
     title: 'Quadras/Locais',
     href: '/locations',
     icon: MapPin,
-    permission: 'location.index'
+    permission: 'locations.index'
+  },
+  {
+    title: 'Horários',
+    href: '/appointments',
+    icon: Clock,
+    permission: 'locations.index'
   }
 ]
 
@@ -40,12 +46,12 @@ const footerNavItems: NavItem[] = [
     title: 'Usuários',
     href: '/users',
     icon: PersonStanding,
-    permission: 'view_users',
+    permission: 'users.index',
     children: [
       {
         title: 'Aprovar Usuários',
         href: '/users/analising',
-        permission: 'approve_users',
+        permission: 'users.analising',
       },
     ],
   },

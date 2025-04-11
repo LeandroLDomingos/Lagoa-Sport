@@ -48,7 +48,7 @@ class LocationController extends Controller
         }
 
         return to_route('locations.index')
-            ->with('success', 'Local criado com sucesso!');
+            ->with('flash.success', 'Quadra/Local criado com sucesso!');
     }
 
     public function appointment($id): Response

@@ -17,4 +17,8 @@ class Location extends Model
         return $this->hasMany(LocationImages::class);
     }
 
+    public function timeSlots()
+    {
+        return $this->hasMany(TimeSlot::class);
+    }
 }

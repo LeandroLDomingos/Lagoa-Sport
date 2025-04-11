@@ -28,7 +28,7 @@ export interface SharedData extends PageProps {
 }
 
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     avatar?: string;
@@ -36,5 +36,60 @@ export interface User {
     created_at: string;
     updated_at: string;
 }
+
+
+export interface LocationImage {
+    id: number
+    image: string
+}
+
+export interface Location {
+    id: string
+    name: string
+    address: string
+    images?: LocationImage[]
+}
+
+export interface TimeSlot {
+    id: number
+    location_id: string
+    date: string      // YYYY-MM-DD
+    start_time: string // HH:mm
+    end_time: string   // HH:mm
+    is_available: boolean
+    appointment?: {
+        id: number
+        user: {
+            id: number
+            name: string
+        }
+    }
+}
+
+export interface Document {
+    id: number
+    file_path: string
+    type: string
+    status: string
+    status_label: string
+    type_label: string
+}
+
+export interface User {
+    id: number
+    name: string
+    email: string
+    cpf: string
+    rg: string
+    zip_code: string
+    address: string
+    neighborhood: string
+    number: string
+    complement?: string
+    city: string
+    state: string
+    country: string
+}
+
 
 export type BreadcrumbItemType = BreadcrumbItem;

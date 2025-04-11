@@ -11,9 +11,10 @@ class DashboardController extends Controller
     public function index(): Response
     {
         $pendingUsersCount = User::where('status', 'is_analising')->count();
+        $countUsers = User::get()->count();
 
         return Inertia::render('Dashboard', [
-            'pendingUsersCount' => $pendingUsersCount,
+            'pendingUsersCount' => $pendingUsersCount, 'users' => $countUsers
         ]);
     }
 }

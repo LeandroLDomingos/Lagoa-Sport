@@ -1,31 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { router } from '@inertiajs/vue3'
+import { Document, User } from '@/types';
 
-interface Document {
-  id: number
-  file_path: string
-  type: string
-  status: string
-  status_label: string
-  type_label: string
-}
-
-interface User {
-  id: number
-  name: string
-  email: string
-  cpf: string
-  rg: string
-  zip_code: string
-  address: string
-  neighborhood: string
-  number: string
-  complement?: string
-  city: string
-  state: string
-  country: string
-}
 
 const props = defineProps<{
   user: User
