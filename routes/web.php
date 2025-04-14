@@ -7,7 +7,9 @@ use App\Http\Controllers\DashboardController;
 
 
 Route::middleware([CheckUserValidation::class])->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])
+    Route::redirect("/","/locations");
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
     require __DIR__ . '/settings.php';
