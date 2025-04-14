@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $pendingUsersCount = User::where('status', 'is_analising')->count();
         $countUsers = User::get()->count();
-        $freeSlots = TimeSlot::where('is_available', 0)->count();
+        $freeSlots = TimeSlot::where('is_available', 1)->count();
         return Inertia::render('Dashboard', [
             'pendingUsersCount' => $pendingUsersCount,
             'users' => $countUsers,
