@@ -25,8 +25,8 @@ class TimeSlotController extends Controller
 
         foreach ($period as $date) {
             foreach ($defaultHours as $hour) {
-                $startTime = sprintf('%02d:00', $hour);
-                $endTime = sprintf('%02d:00', $hour + 1);
+                $startTime = sprintf('%02d:00:00', $hour);
+                $endTime = sprintf('%02d:00:00', $hour + 1);
         
                 // Verifica se o horário é no futuro
                 $slotDateTime = Carbon::parse($date->toDateString() . ' ' . $startTime);
@@ -50,7 +50,7 @@ class TimeSlotController extends Controller
                         'date' => $date->toDateString(),
                         'start_time' => $startTime,
                         'end_time' => $endTime,
-                        'is_available' => true,
+                        'is_available' => false,
                     ]);
                 }
             }
@@ -92,7 +92,7 @@ class TimeSlotController extends Controller
                 'start_time' => $slotData['start_time'], // Já vem com :00, então não é necessário concatenar
                 'end_time' => $slotData['end_time'], // O mesmo vale para o end_time
             ], [
-                'is_available' => false,
+                'is_available' => true,
             ]);
         }
     
@@ -100,25 +100,5 @@ class TimeSlotController extends Controller
         ->with('flash.success', 'Horários liberados com sucesso!');
     }
     
-    
 
-    public function book(Request $request, TimeSlot $timeslot)
-    {
-        if (!$timeslot->is_available) {
-            return back()->withErrors(['Horário já agendado']);
-        }
-
-        $validated = $request->validate([
-            'notes' => 'nullable|string',
-        ]);
-
-        $timeslot->update(['is_available' => false]);
-
-        $timeslot->appointment()->create([
-            'user_id' => auth()->id(),
-            'notes' => $validated['notes'] ?? null,
-        ]);
-
-        return back()->with('success', 'Horário agendado com sucesso.');
-    }
 }

@@ -28,7 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <div class="p-6 rounded-lg shadow-md">
       <div class="flex items-center justify-between mb-4">
         <HeadingSmall title="Selecione uma quadra/local" />
-        <Button v-if="can('create_locations')" as-child>
+        <Button v-if="can('locations.create')" as-child>
           <a href="/locations/create">
             Adicionar Local
           </a>

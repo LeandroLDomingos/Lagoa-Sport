@@ -4,17 +4,12 @@ use App\Http\Middleware\ACLMiddleware;
 use App\Http\Middleware\CheckUserValidation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
 
 Route::middleware([CheckUserValidation::class])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])
+    Route::get('/', [DashboardController::class, 'index'])
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
-
     require __DIR__ . '/settings.php';
     require __DIR__ . '/auth.php';
 
@@ -22,9 +17,9 @@ Route::middleware([CheckUserValidation::class])->group(function () {
 
 
 Route::middleware([CheckUserValidation::class, ACLMiddleware::class, 'auth'])->group(function () {
-    require __DIR__ .'/locations.php';
-    require __DIR__ .'/appointments.php';
-});   
+    require __DIR__ . '/locations.php';
+    require __DIR__ . '/appointments.php';
+});
 
 require __DIR__ . '/documents.php';
 

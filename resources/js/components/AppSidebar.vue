@@ -23,7 +23,7 @@ const { can } = usePermission()
 const mainNavItems: NavItem[] = [
   {
     title: 'Painel de controle',
-    href: '/dashboard',
+    href: '/',
     icon: LayoutGrid,
   },
   {
