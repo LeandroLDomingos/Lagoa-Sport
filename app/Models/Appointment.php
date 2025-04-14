@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
-    public function timeSlot()
+    public function timeSlots()
     {
-        return $this->belongsTo(TimeSlot::class);
+        return $this->belongsToMany(TimeSlot::class)
+                    ->withTimestamps();
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    
 }

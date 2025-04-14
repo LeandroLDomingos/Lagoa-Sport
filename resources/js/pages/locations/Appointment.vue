@@ -112,9 +112,8 @@ const breadcrumbs: BreadcrumbItem[] = [
       <div v-if="selectedDate && props.slotsByDate[selectedDate]">
         <h3 class="font-semibold text-lg mb-2">Horários disponíveis:</h3>
         <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-          <li v-for="slot in props.slotsByDate[selectedDate]" :key="slot.id">
-
-            <a href="">
+          <li v-for="(slot, id) in props.slotsByDate[selectedDate]" :key="slot.id">
+            <a :href="route('appointments.create', slot.id)">
               <Button class="bg-primary/10 text-primary hover:text-black">
                 {{ formatTime(slot.start_time) }} às {{ formatTime(slot.end_time) }}
                 <Clock />
