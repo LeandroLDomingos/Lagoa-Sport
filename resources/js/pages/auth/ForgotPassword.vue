@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Esqueci a senha" description="Digite seu e-mail para receber um link e redefinir sua senha">
+    <AuthLayout title="Esqueci a senha." description="Digite seu e-mail para receber um link e redefinir sua senha.">
         <Head title="Esqueci a senha" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -47,7 +47,7 @@ const submit = () => {
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
                 <span>Ou, voltar para</span>
-                <TextLink :href="route('login')">log in</TextLink>
+                <TextLink :href="route('login')">entrar.</TextLink>
             </div>
         </div>
     </AuthLayout>
