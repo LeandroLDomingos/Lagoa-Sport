@@ -32,7 +32,7 @@ const props = defineProps<{
           class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
           <h2 class="text-xl font-semibold mb-2">Usuários em Analise</h2>
           <p class="text-3xl font-bold text-primary">
-            {{ props.pendingUsersCount }}
+            <a href="users/analising">{{ props.pendingUsersCount }}</a>
           </p>
         </div>
 

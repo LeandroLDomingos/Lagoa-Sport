@@ -21,6 +21,7 @@ Route::middleware([CheckUserValidation::class])->group(function () {
 Route::middleware([CheckUserValidation::class, ACLMiddleware::class, 'auth'])->group(function () {
     require __DIR__ . '/locations.php';
     require __DIR__ . '/appointments.php';
+    require __DIR__ . '/users.php';
 });
 
 require __DIR__ . '/documents.php';

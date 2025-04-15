@@ -35,6 +35,14 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    roles?: Roles[]; 
+}
+
+export interface Roles{
+    id: number;
+    name: string;
+    description: string;
+    level: number;
 }
 
 
