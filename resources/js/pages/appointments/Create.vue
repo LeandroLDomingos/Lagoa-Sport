@@ -227,34 +227,32 @@ const isParticipantFormValid = computed(() => {
             <span class="ml-2">{{ slot.start_time }} – {{ slot.end_time }}</span>
           </div>
         </div>
-
+        <!-- Botão: Sou um participante -->
+        <Button v-if="!isSelfParticipant" type="button" @click="addCurrentUserAsParticipant" class="w-full">
+          Sou um participante
+        </Button>
+        
         <!-- Participantes -->
         <div>
           <h2 class="text-lg font-medium mb-2">Participantes</h2>
-
-          <!-- Botão: Sou um participante -->
-          <div class="mb-4">
-            <Button v-if="!isSelfParticipant" type="button" variant="outline" @click="addCurrentUserAsParticipant">
-              Sou um participante
-            </Button>
-          </div>
-
+          
           <ul v-if="participants.length" class="space-y-2 mb-4">
             <li v-for="(p, idx) in participants" :key="idx"
-              class="flex justify-between items-center bg-gray-50 p-3 rounded">
-              <div>
-                <p class="font-semibold">{{ p.name }}</p>
-                <p class="text-sm text-gray-600">
-                  {{ p.cpf }} | {{ p.rg }} | {{ p.contact }} | {{ p.email }}
-                </p>
-              </div>
-              <button type="button" @click="removeParticipant(idx)" class="text-red-600 hover:underline">
-                Remover
-              </button>
-            </li>
-          </ul>
-
-          <!-- Formulário de participante -->
+            class="flex justify-between items-center bg-gray-50 p-3 rounded">
+            <div>
+              <p class="font-semibold">{{ p.name }}</p>
+              <p class="text-sm text-gray-600">
+                {{ p.cpf }} | {{ p.rg }} | {{ p.contact }} | {{ p.email }}
+              </p>
+            </div>
+            <button type="button" @click="removeParticipant(idx)" class="text-red-600 hover:underline">
+              Remover
+            </button>
+          </li>
+        </ul>
+        
+        <h2 class="text-lg font-medium mb-2">Adicionar participante</h2>
+        <!-- Formulário de participante -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <!-- Nome -->
             <div>
@@ -325,11 +323,9 @@ const isParticipantFormValid = computed(() => {
         </div>
 
         <!-- Enviar -->
-        <div class="pt-4">
-          <Button type="submit" :disabled="form.processing" class="w-full">
-            Confirmar Agendamento
-          </Button>
-        </div>
+        <Button type="submit" :disabled="form.processing" class="w-full">
+          Confirmar Agendamento
+        </Button>
       </form>
     </div>
   </AppLayout>

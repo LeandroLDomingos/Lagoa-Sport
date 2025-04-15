@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Models\LocationImages;
 use App\Models\TimeSlot;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -57,6 +58,11 @@ class LocationController extends Controller
     {
         $location = Location::with("images")->findOrFail($id);
 
+        // Data e hora atuais
+        $now = Carbon::now();
+        $today = $now->toDateString();
+        $currentTime = $now->toTimeString();
+
         // Pega todos os slots liberados (is_available = true) desta semana
         $slots = TimeSlot::with('appointment.user')
             ->where('location_id', $location->id)
@@ -65,14 +71,20 @@ class LocationController extends Controller
                 now()->startOfWeek(),
                 now()->endOfWeek()
             ])
+            ->where(function ($query) use ($today, $currentTime) {
+                $query->where('date', '>', $today)
+                    ->orWhere(function ($query) use ($today, $currentTime) {
+                        $query->where('date', $today)
+                            ->where('start_time', '>', $currentTime);
+                    });
+            })
+
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();
-
         // Agrupa por data
         $slotsByDate = $slots->groupBy('date')->map->values();
 
-        // dd($slotsByDate);
         // Retorna a view passando os dados da localização
         return Inertia::render('locations/Appointment', [
             'location' => $location,
@@ -97,7 +109,7 @@ class LocationController extends Controller
     public function update(Request $request, Location $location): RedirectResponse
     {
         // dd($request->all());
-        
+
         // 1. Validação
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -140,7 +152,7 @@ class LocationController extends Controller
     public function destroy(Location $location): RedirectResponse
     {
         foreach ($location->images as $img) {
-            Storage::disk('public')->delete($img->image); 
+            Storage::disk('public')->delete($img->image);
             $img->delete();
         }
 

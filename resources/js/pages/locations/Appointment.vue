@@ -87,6 +87,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         </p>
 
 
+
       </div>
       <!-- Barra de dias -->
       <div v-if="Object.keys(slotsByDate).length === 0">
