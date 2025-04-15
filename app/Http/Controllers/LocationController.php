@@ -31,12 +31,14 @@ class LocationController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'images.*' => 'nullable|image|mimes:jpg,png|max:5120', // até 5MB
+            'min_participants' => 'required|numeric',
         ]);
 
         // Cria o location
         $location = Location::create([
             'name' => $data['name'],
             'address' => $data['address'],
+            'min_participants' => $data['min_participants'],
         ]);
 
         // Se houver imagens, armazena e cria registros
@@ -95,10 +97,10 @@ class LocationController extends Controller
     public function edit(Location $location)
     {
         // Carrega as imagens relacionadas
-        $existingImages = $location->images()->get(['id', 'image']);
+        $existingImages = $location->images()->get();
 
         return Inertia::render('locations/Edit', [
-            'location' => $location->only(['id', 'name', 'address']),
+            'location' => $location,
             'existingImages' => $existingImages,
             'canEdit' => auth()->user()->can('update', $location),
         ]);
@@ -117,12 +119,14 @@ class LocationController extends Controller
             'newImages.*' => 'nullable|image|mimes:jpg,png|max:5120',
             'removedImageIds' => 'nullable|array',
             'removedImageIds.*' => 'integer|exists:location_images,id',
+            'min_participants' => 'required|numeric',
         ]);
 
         // 2. Atualiza nome e endereço
         $location->update([
             'name' => $data['name'],
             'address' => $data['address'],
+            'min_participants' => $data['min_participants'],
         ]);
 
         // 3. Remove imagens marcadas

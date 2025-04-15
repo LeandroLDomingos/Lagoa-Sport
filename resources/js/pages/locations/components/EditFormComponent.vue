@@ -18,6 +18,7 @@ const form = useForm({
   images: [] as File[],
   name: '',
   address: '',
+  min_participants: 0,
   removedImageIds: [] as number[],
 })
 
@@ -59,7 +60,8 @@ function submit() {
 
 onMounted(() => {
   form.name = props.location.name
-  form.address = props.location.address 
+  form.address = props.location.address
+  form.min_participants = props.location.min_participants
 })
 
 function destroy() {
@@ -73,6 +75,7 @@ function destroy() {
 </script>
 
 <template>
+
   <form @submit.prevent="submit" class="flex flex-col gap-6">
     <div class="grid gap-2">
       <Label for="name">Nome</Label>
@@ -84,6 +87,14 @@ function destroy() {
       <Label for="address">Endereço</Label>
       <Input id="address" v-model="form.address" type="text" required />
       <InputError :message="form.errors.address" />
+    </div>
+
+    <!-- Quantidade minima para 2 horas -->
+    <div class="grid gap-2">
+      <Label for="min_participants">Minimo de participantes para 2 horas</Label>
+      <Input id="min_participants" v-model="form.min_participants" type="number" required
+        placeholder="Quantidade minima" />
+      <InputError :message="form.errors.min_participants" />
     </div>
 
     <div v-if="existingPreviews.length" class="grid grid-cols-3 gap-4">

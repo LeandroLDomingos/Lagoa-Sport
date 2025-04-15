@@ -109,21 +109,25 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Areião - Futebol de Areia',
                 'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
                 'images' => ['locations/Areião - Futebol de Areia.jpg'],
+                'min_participants' => 13,
             ],
             [
                 'name' => 'Areião - Futevolei e Volei de Praia',
                 'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
                 'images' => ['locations/Areião - Futevolei e Volei de Praia.jpg'],
+                'min_participants' => 7,
             ],
             [
                 'name' => 'Areião - Quadra 3 Peteca',
                 'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
                 'images' => ['locations/Areião - Quadra 3 Peteca.jpg'],
+                'min_participants' => 7,
             ],
             [
                 'name' => 'Areião - Quadra 4 Peteca',
                 'address' => 'Av. Getúlio Vargas, 5460 - Várzea',
                 'images' => ['locations/Areião - Quadra 4 Peteca.jpg'],
+                'min_participants' => 7,
             ],
             
         ];
@@ -132,6 +136,7 @@ class DatabaseSeeder extends Seeder
             $loc = Location::create([
                 'name' => $location['name'],
                 'address' => $location['address'],
+                'min_participants' => $location['min_participants'],
             ]);
 
             // Supondo que exista uma relação hasMany chamada "images"

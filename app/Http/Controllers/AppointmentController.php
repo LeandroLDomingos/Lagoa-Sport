@@ -23,14 +23,13 @@ class AppointmentController extends Controller
 
     public function create($id): Response
     {
-        $slot = TimeSlot::findOrFail($id);
+        $slot = TimeSlot::with('location')->findOrFail($id);
 
         $nextSlot = TimeSlot::where('location_id', $slot->location_id)
             ->where('date', $slot->date)
             ->where('start_time', $slot->end_time)
             ->where('is_available', true)
             ->first();
-
         return Inertia::render('appointments/Create', [
             'slot' => $slot,
             'canExtendTime' => $nextSlot !== null,
@@ -56,8 +55,8 @@ class AppointmentController extends Controller
                 'participants.required' => 'Você precisa adicionar participantes para agendar.',
             ]
         );
-
-
+        $timeSlot = TimeSlot::find($data['timeSlotIds'][0]);
+        $location = Location::find($timeSlot->location_id);
         $participantIds = [];
         foreach ($data['participants'] as $p) {
             // Tenta achar pelo CPF
@@ -68,7 +67,7 @@ class AppointmentController extends Controller
             $participantIds[] = $participant->id;
         }
 
-        if (count($data['participants']) <= 6) {
+        if (count($data['participants']) < $location->min_participants) {
 
             $appointment = Appointment::create([
                 'user_id' => auth()->user()->id,

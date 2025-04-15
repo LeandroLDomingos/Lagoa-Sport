@@ -225,7 +225,6 @@ watch(timeSlotString, (val) => {
   <AppLayout :breadcrumbs="breadcrumbs">
 
     <Head title="Criar Agendamento" />
-
     <div class="p-6 bg-white rounded shadow">
       <h1 class="text-2xl font-semibold mb-4">Criar Agendamento</h1>
       <form @submit.prevent="submitAppointment" class="space-y-6">
@@ -313,7 +312,7 @@ watch(timeSlotString, (val) => {
         </div>
 
         <!-- Tempo estendido -->
-        <div v-if="canExtendTime && form.participants.length > 6" class="mt-4">
+        <div v-if="canExtendTime && form.participants.length >= slot.location.min_participants" class="mt-4">
           <Label>Tempo de agendamento</Label>
           <Select v-model="timeSlotString">
             <SelectTrigger>

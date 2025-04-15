@@ -11,6 +11,7 @@ const form = useForm({
     images: [] as File[],
     name: '',
     address: '',
+    min_participants: '',
 })
 
 // array reativo de URLs para preview
@@ -59,6 +60,13 @@ function submit() {
             <Label for="address">Endereço</Label>
             <Input id="address" v-model="form.address" type="text" required placeholder="Endereço da Quadra/Local" />
             <InputError :message="form.errors.address" />
+        </div>
+
+        <!-- Quantidade minima para 2 horas -->
+        <div class="grid gap-2">
+            <Label for="min_participants">Minimo de participantes para 2 horas</Label>
+            <Input id="min_participants" v-model="form.min_participants" type="number" required placeholder="Quantidade minima" />
+            <InputError :message="form.errors.min_participants" />
         </div>
 
         <!-- Imagens -->

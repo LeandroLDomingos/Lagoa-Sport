@@ -10,7 +10,7 @@ class Location extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address'];
+    protected $fillable = ['name', 'address', 'min_participants'];
 
     public function images()
     {

@@ -55,6 +55,7 @@ export interface Location {
     id: string
     name: string
     address: string
+    min_participants: number
     images?: LocationImage[]
 }
 
@@ -72,6 +73,7 @@ export interface TimeSlot {
             name: string
         }
     }
+    location: Location
 }
 
 export interface Document {
