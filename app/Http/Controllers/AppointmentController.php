@@ -55,6 +55,7 @@ class AppointmentController extends Controller
                 'participants.required' => 'Você precisa adicionar participantes para agendar.',
             ]
         );
+
         $timeSlot = TimeSlot::find($data['timeSlotIds'][0]);
         $location = Location::find($timeSlot->location_id);
         $participantIds = [];
@@ -85,9 +86,11 @@ class AppointmentController extends Controller
             $appointments[0]->participants()->sync($participantIds);
         }
 
+        foreach 
+
 
         return to_route('appointments.index')
-            ->with('flash.success', 'Appointment created successfully.');
+            ->with('flash.success', 'Agendamento criado com sucesso.');
     }
 
 
