@@ -16,5 +16,8 @@ Route::post('/timeslots/{timeSlot}/book', [TimeSlotController::class, 'book'])
 Route::get('/appointments', [AppointmentController::class, 'index'])
     ->name('appointments.index');
 
-    Route::get('/appointments/{id}', [AppointmentController::class, 'create'])
+Route::post('/appointments', [AppointmentController::class, 'store'])
+    ->name('appointments.store');
+
+Route::get('/appointments/{id}', [AppointmentController::class, 'create'])
     ->name('appointments.create');

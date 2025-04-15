@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
+
+    protected $fillable = [
+        'user_id',
+        'time_slot_id',
+        'notes',
+    ];
+
     public function timeSlots()
     {
         return $this->belongsToMany(TimeSlot::class)
@@ -17,5 +24,10 @@ class Appointment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function participants()
+    {
+        return $this->belongsToMany(Participant::class)
+                    ->withTimestamps();
+    }
     
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -118,6 +119,11 @@ class RegisteredUserController extends Controller
             'status' => $request->status,
             'term' => true
         ]);
+        $guestRole = Role::where('name', 'guest')->first();
+
+        if ($guestRole) {
+            $user->roles()->sync([$guestRole->id]);
+        }
 
         event(new Registered($user));
 

@@ -38,8 +38,7 @@ const currentUser = computed(() => usePage().props.auth.user as {
 
 // Inertia form
 const form = useForm({
-  timeSlotIds: [] as Array<any>,
-  slot_id: props.slot.id,
+  timeSlotIds: [props.slot.id] as number[],  // já vem com o slot selecionado
   participants: [] as Array<{
     name: string
     cpf: string
@@ -48,6 +47,7 @@ const form = useForm({
     email: string
   }>,
 })
+
 
 const participants = computed(() => form.participants)
 
@@ -58,81 +58,6 @@ const participantForm = reactive({
   contact: '',
   email: '',
 })
-
-function saveParticipant() {
-  if (!validateParticipantForm()) return
-
-  participants.value.push({ ...participantForm })
-  resetParticipantForm()
-}
-
-function isSelf(participant: any) {
-  const user = currentUser.value
-  return (
-    participant.name === user.name &&
-    participant.cpf === user.cpf &&
-    participant.email === user.email
-  )
-}
-
-function removeParticipant(idx: number, user: any) {
-  const removed = participants.value[idx]
-
-  if (isSelf(removed)) {
-    isSelfParticipant.value = false
-  }
-
-  participants.value.splice(idx, 1)
-}
-
-
-function resetParticipantForm() {
-  participantForm.name = ''
-  participantForm.cpf = ''
-  participantForm.rg = ''
-  participantForm.contact = ''
-  participantForm.email = ''
-}
-
-
-function submitAppointment() {
-  form.participants = participants.value
-  form.post(route('appointments.store'))
-}
-
-const isSelfParticipant = ref(false)
-
-// Adiciona usuário atual como participante
-function addCurrentUserAsParticipant() {
-  const user = currentUser.value
-  const exists = participants.value.some(p => p.email === user.email)
-  isSelfParticipant.value = true
-  if (!exists) {
-    participants.value.push({
-      name: user.name,
-      cpf: user.cpf,
-      rg: user.rg,
-      contact: user.contact,
-      email: user.email,
-    })
-  }
-}
-
-const extendTime = ref(false)
-
-const selectedTimeLabel = computed(() => {
-  if (!form.timeSlotIds.length) return ''
-  return form.timeSlotIds.length === 2
-    ? '2 horas (2 horários)'
-    : '1 hora (padrão)'
-})
-
-const timeSlotString = ref<string | null>(null)
-
-watch(timeSlotString, (val) => {
-  form.timeSlotIds = val ? JSON.parse(val) : []
-})
-
 
 const participantErrors = reactive({
   name: '',
@@ -160,7 +85,6 @@ function isValidCPF(cpf: string): boolean {
 
   return true
 }
-
 
 function validateParticipantForm() {
   let valid = true
@@ -203,13 +127,99 @@ function validateParticipantForm() {
   return valid
 }
 
-
 const isParticipantFormValid = computed(() => {
   return validateParticipantForm()
 })
 
+function saveParticipant() {
+  if (!validateParticipantForm()) return
 
+  // Normaliza CPF removendo tudo que não for dígito
+  const cpfNormalized = participantForm.cpf.replace(/[^\d]/g, '')
+  // Verifica se já existe participante com esse CPF
+  const exists = participants.value.some(p =>
+    p.cpf.replace(/[^\d]/g, '') === cpfNormalized
+  )
 
+  if (exists) {
+    participantErrors.cpf = 'Este CPF já foi adicionado como participante.'
+    return
+  }
+
+  // Se não existe, adiciona
+  participants.value.push({ ...participantForm })
+  resetParticipantForm()
+}
+
+function resetParticipantForm() {
+  participantForm.name = ''
+  participantForm.cpf = ''
+  participantForm.rg = ''
+  participantForm.contact = ''
+  participantForm.email = ''
+  // limpa erros também
+  participantErrors.name = ''
+  participantErrors.cpf = ''
+  participantErrors.rg = ''
+  participantErrors.contact = ''
+  participantErrors.email = ''
+}
+
+function isSelf(participant: any) {
+  const user = currentUser.value
+  return (
+    participant.name === user.name &&
+    participant.cpf === user.cpf &&
+    participant.email === user.email
+  )
+}
+
+function removeParticipant(idx: number) {
+  const removed = participants.value[idx]
+
+  if (isSelf(removed)) {
+    isSelfParticipant.value = false
+  }
+
+  participants.value.splice(idx, 1)
+}
+
+const isSelfParticipant = ref(false)
+
+function addCurrentUserAsParticipant() {
+  const user = currentUser.value
+  const exists = participants.value.some(p => p.email === user.email)
+  isSelfParticipant.value = true
+  if (!exists) {
+    participants.value.push({
+      name: user.name,
+      cpf: user.cpf,
+      rg: user.rg,
+      contact: user.contact,
+      email: user.email,
+    })
+  }
+}
+
+function submitAppointment() {
+  form.participants = participants.value
+  form.post(route('appointments.store'))
+}
+
+const extendTime = ref(false)
+
+const selectedTimeLabel = computed(() => {
+  if (!form.timeSlotIds.length) return ''
+  return form.timeSlotIds.length === 2
+    ? '2 horas (2 horários)'
+    : '1 hora (padrão)'
+})
+
+const timeSlotString = ref<string | null>(null)
+
+watch(timeSlotString, (val) => {
+  form.timeSlotIds = val ? JSON.parse(val) : []
+})
 </script>
 <template>
   <AppLayout :breadcrumbs="breadcrumbs">
