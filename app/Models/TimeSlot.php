@@ -16,14 +16,8 @@ class TimeSlot extends Model
         return $this->belongsTo(Location::class);
     }
 
-    public function appointments()
-    {
-        return $this->belongsToMany(Appointment::class)
-            ->withTimestamps();
-    }
-
     public function appointment()
     {
-        return $this->hasOne(Appointment::class);
+        return $this->belongsTo(Appointment::class);
     }
 }

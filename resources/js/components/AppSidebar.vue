@@ -22,11 +22,6 @@ const { can } = usePermission()
 // Itens do menu principal (sempre visíveis para quem pode)
 const mainNavItems: NavItem[] = [
   {
-    title: 'Painel de controle',
-    href: '/dashboard',
-    icon: LayoutGrid,
-  },
-  {
     title: 'Quadras/Locais',
     href: '/locations',
     icon: MapPin,
@@ -42,6 +37,11 @@ const mainNavItems: NavItem[] = [
 
 // Itens do menu do rodapé (com subitens)
 const footerNavItems: NavItem[] = [
+  {
+    title: 'Painel de controle',
+    href: '/dashboard',
+    icon: LayoutGrid,
+  },
   {
     title: 'Usuários',
     href: '/users',
@@ -78,7 +78,7 @@ const filteredFooterItems = footerNavItems
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child>
             <Link :href="route('dashboard')">
-              <AppLogo />
+            <AppLogo />
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>

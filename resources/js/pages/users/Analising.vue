@@ -7,7 +7,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AlertProvider from '@/components/AlertProvider.vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import DocumentsUserComponent from './DocumentsUserComponent.vue';
+import DocumentsUserComponent from './components/DocumentsUserComponent.vue';
 
 const page = usePage();
 

@@ -25,3 +25,6 @@ Route::post('/appointments', [AppointmentController::class, 'store'])
 
 Route::get('/appointments/{id}', [AppointmentController::class, 'create'])
     ->name('appointments.create');
+
+    Route::get('/appointments/voucher/{id}', [AppointmentController::class, 'voucher'])
+    ->name('appointments.voucher');

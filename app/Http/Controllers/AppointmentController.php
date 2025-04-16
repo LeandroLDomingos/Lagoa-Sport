@@ -37,7 +37,6 @@ class AppointmentController extends Controller
         ]);
     }
 
-
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate(
@@ -55,47 +54,52 @@ class AppointmentController extends Controller
                 'participants.required' => 'Você precisa adicionar participantes para agendar.',
             ]
         );
-
-        $timeSlot = TimeSlot::find($data['timeSlotIds'][0]);
-        $location = Location::find($timeSlot->location_id);
-        $participantIds = [];
-        foreach ($data['participants'] as $p) {
-            // Tenta achar pelo CPF
-            $participant = Participant::firstOrCreate(
-                ['cpf' => $p['cpf']],
-                $p
-            );
-            $participantIds[] = $participant->id;
-        }
-
-        if (count($data['participants']) < $location->min_participants) {
-
-            $appointment = Appointment::create([
-                'user_id' => auth()->user()->id,
-                'time_slot_id' => $data['timeSlotIds'][0],
-            ]);
+    
+        // Obtém o primeiro timeSlot
+        $firstSlot = TimeSlot::findOrFail($data['timeSlotIds'][0]);
+        $location = $firstSlot->location;
+        
+        // Cria ou obtém os participantes
+        $participantIds = collect($data['participants'])->map(function ($p) {
+            return Participant::updateOrCreate(
+                ['cpf' => $p['cpf']],  // Atualiza ou cria o participante com base no CPF
+                $p  // Atribui os outros dados como name, rg, etc.
+            )->id;
+        });
+    
+        // Criação do agendamento
+        $appointment = Appointment::create([
+            'user_id' => auth()->id(),
+        ]);
+    
+        // Verifica se o número de participantes é suficiente para dois time slots
+        if (count($participantIds) >= $location->min_participants) {
+            // Se o número de participantes for suficiente, associa os participantes e 2 timeSlots
             $appointment->participants()->sync($participantIds);
+            // Associa os dois time slots ao agendamento
+            $appointment->timeSlots()->sync($data['timeSlotIds']);
         } else {
-            $appointments = [];
-            foreach ($data['timeSlotIds'] as $slot_id) {
-                $appointments[] = Appointment::create([
-                    'user_id' => auth()->user()->id,
-                    'time_slot_id' => $slot_id,
-                ]);
-            }
-            $appointments[0]->participants()->sync($participantIds);
+            // Caso contrário, associa apenas 1 timeSlot
+            $appointment->participants()->sync($participantIds);
+            $appointment->timeSlots()->sync([$data['timeSlotIds'][0]]);
         }
-
-        foreach( $data['timeSlotIds'] as $slot_id) {
-            $slot = TimeSlot::find($slot_id);
-            $slot->update(['is_available' => 0]);
-        }
-
-
-        return to_route('locations.index')
-            ->with('flash.success', 'Agendamento criado com sucesso.');
+    
+        // Marca os time slots como indisponíveis
+        TimeSlot::whereIn('id', $data['timeSlotIds'])->update(['is_available' => false]);
+    
+        // Redireciona para o voucher do agendamento
+        return redirect()->to(route('appointments.voucher', ['id' => $appointment->id]))
+            ->with('flash.success', 'Agendado com sucesso.');
     }
-
+    
+    public function voucher($id)
+    {
+        $appointment = Appointment::with(['participants', 'timeSlots.location','user'])->find($id);
+        return Inertia::render('appointments/Voucher', [
+            'appointment' => $appointment,
+        ]);
+    }
+    
 
     public function destroy(Appointment $appointment): RedirectResponse
     {

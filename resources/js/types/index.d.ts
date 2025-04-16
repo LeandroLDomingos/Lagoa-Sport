@@ -35,10 +35,10 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    roles?: Roles[]; 
+    roles?: Roles[];
 }
 
-export interface Roles{
+export interface Roles {
     id: number;
     name: string;
     description: string;
@@ -60,21 +60,15 @@ export interface Location {
 }
 
 export interface TimeSlot {
-    id: number
-    location_id: string
-    date: string      // YYYY-MM-DD
-    start_time: string // HH:mm
-    end_time: string   // HH:mm
-    is_available: boolean
-    appointment?: {
-        id: number
-        user: {
-            id: number
-            name: string
-        }
-    }
-    location: Location
+    id: number;
+    location_id: string;
+    date: string;      // YYYY-MM-DD
+    start_time: string; // HH:mm
+    end_time: string;   // HH:mm
+    is_available: boolean;
+    location: Location; // Aqui vem a localização do time slot
 }
+
 
 export interface Document {
     id: number
@@ -101,5 +95,25 @@ export interface User {
     country: string
 }
 
+
+export interface Appointment {
+    id: number;              
+    user_id: string;          
+    notes: string;           
+    created_at?: string;
+    updated_at?: string;
+    time_slots: TimeSlot[];
+    participants?: Participant[];
+    user: User;               
+}
+
+interface Participant {
+    id: number;
+    name: string;
+    cpf: string;
+    rg: string;
+    contact?: Nullable<string>;
+    email?: Nullable<string>;
+}
 
 export type BreadcrumbItemType = BreadcrumbItem;

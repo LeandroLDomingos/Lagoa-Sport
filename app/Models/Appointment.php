@@ -13,12 +13,6 @@ class Appointment extends Model
         'notes',
     ];
 
-    public function timeSlots()
-    {
-        return $this->belongsToMany(TimeSlot::class)
-                    ->withTimestamps();
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -27,7 +21,18 @@ class Appointment extends Model
     public function participants()
     {
         return $this->belongsToMany(Participant::class)
-                    ->withTimestamps();
+            ->withTimestamps();
     }
-    
+    public function timeSlot()
+    {
+        return $this->belongsToMany(TimeSlot::class);
+    }
+
+    public function timeSlots()
+    {
+        return $this->belongsToMany(TimeSlot::class)
+            ->withTimestamps()
+            ->with('location');
+
+    }
 }
