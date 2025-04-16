@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import AlertProvider from '@/components/AlertProvider.vue'
 import type { BreadcrumbItem, Location, TimeSlot } from '@/types'
 import HeadingSmall from '@/components/HeadingSmall.vue'
-import { Clock } from 'lucide-vue-next'
+import { Clock, Trash2 } from 'lucide-vue-next'
 
 // Props vindas do controller
 const props = defineProps<{
@@ -98,17 +98,6 @@ activeWeekDates.value.forEach(date => {
   selectedSlotsByDate.value[date] = []
 })
 
-// marcar/desmarcar todos para o dia
-watch(selectAllByDate, (all) => {
-  const date = selectedDate.value
-  if (all[date]) {
-    selectedSlotsByDate.value[date] = slotsForSelectedDate.value
-      .filter(s => s.is_available)
-      .map(s => `${s.date}|${s.start_time}|${s.end_time}`)
-  } else {
-    selectedSlotsByDate.value[date] = []
-  }
-})
 
 // toggle individual
 function toggleSlotCheckbox(slot: TimeSlot) {
@@ -148,6 +137,23 @@ function formatTime(ts: string) {
   const [h, m] = ts.split(':')
   return `${h}:${m}`
 }
+
+function confirmSlotDeletion(slot: TimeSlot) {
+  const confirmation = confirm(
+    `Deseja realmente excluir o horário das ${formatTime(slot.start_time)} às ${formatTime(slot.end_time)}?`
+  );
+
+  if (confirmation) {
+    deleteSlot(slot);
+  }
+}
+
+const deleteForm = useForm({})
+
+function deleteSlot(slot: TimeSlot) {
+  deleteForm.delete(route('timeslots.destroy', slot.id))
+}
+
 </script>
 
 <template>
@@ -166,8 +172,7 @@ function formatTime(ts: string) {
           location: props.location.id,
           week_start: e.target.value
         }))"
-        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary"
-         >
+          class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary">
           <option v-for="option in props.weekOptions" :key="option.value" :value="option.value"
             :selected="option.value === props.weekStart">
             {{ option.label }}
@@ -188,28 +193,22 @@ function formatTime(ts: string) {
         </button>
       </div>
 
-
-      <!-- Marcar todos -->
-      <!-- <div class="mb-4">
-        <label class="inline-flex items-center space-x-2">
-          <input type="checkbox" v-model="selectAllByDate[selectedDate]" class="h-4 w-4" />
-          <span class="select-none">Marcar todos</span>
-        </label>
-      </div> -->
-
       <!-- Horários do dia -->
-      <div class="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-5 xl:grid-cols-7 gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4 mb-6">
         <label v-for="slot in slotsForSelectedDate" :key="slot.start_time"
-          class="border rounded px-3 py-2 flex justify-between items-center cursor-pointer">
+        class="border rounded px-3 py-2 flex justify-between items-center cursor-pointer">
           <div class="flex items-center space-x-2">
-            <input v-if="!slot.is_available" type="checkbox" :value="`${slot.date}|${slot.start_time}|${slot.end_time}`"
+            <input v-if="!slot.is_available && !slot.appointment" type="checkbox" :value="`${slot.date}|${slot.start_time}|${slot.end_time}`"
               :checked="selectedSlotsByDate[selectedDate].includes(`${slot.date}|${slot.start_time}|${slot.end_time}`)"
               @change="() => toggleSlotCheckbox(slot)" class="h-4 w-4" />
+            <!-- Ícone de lápis clicável com confirmação -->
+            <Trash2 v-if="slot.is_available" class="cursor-pointer text-red-500" @click="confirmSlotDeletion(slot)" />
             <span class="text-sm">
               {{ formatTime(slot.start_time) }} às {{ formatTime(slot.end_time) }}
-              <br>
+              <br />
               <small v-if="slot.is_available" class="text-green-600">Liberado</small>
-              <small v-else class="text-red-600">Fechado</small>
+              <small v-if="slot.appointment" class="text-orange-600">Agendado</small>
+              <small v-else-if="!slot.appointment && !slot.is_available" class="text-red-600">Fechado</small>
             </span>
           </div>
           <Clock class="text-gray-500 w-5 h-5" />

@@ -16,6 +16,10 @@ Route::post('/timeslots/{timeSlot}/book', [TimeSlotController::class, 'book'])
 Route::get('/appointments', [AppointmentController::class, 'index'])
     ->name('appointments.index');
 
+Route::delete('/timeslots/{id}', [TimeSlotController::class, 'destroy'])
+    ->name('timeslots.destroy');
+
+
 Route::post('/appointments', [AppointmentController::class, 'store'])
     ->name('appointments.store');
 
