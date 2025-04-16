@@ -86,10 +86,13 @@ class AppointmentController extends Controller
             $appointments[0]->participants()->sync($participantIds);
         }
 
-        foreach 
+        foreach( $data['timeSlotIds'] as $slot_id) {
+            $slot = TimeSlot::find($slot_id);
+            $slot->update(['is_available' => 0]);
+        }
 
 
-        return to_route('appointments.index')
+        return to_route('locations.index')
             ->with('flash.success', 'Agendamento criado com sucesso.');
     }
 

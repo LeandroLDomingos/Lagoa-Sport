@@ -3,7 +3,6 @@ import { Location, TimeSlot, type BreadcrumbItem } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import AlertProvider from '@/components/AlertProvider.vue'
-import HeadingSmall from '@/components/HeadingSmall.vue'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
