@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar'
 import { type NavItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { PersonStanding, LayoutGrid, MapPin, Clock } from 'lucide-vue-next'
+import { PersonStanding, LayoutGrid, MapPin, Clock, Camera } from 'lucide-vue-next'
 import AppLogo from './AppLogo.vue'
 import { usePermission } from '@/composables/usePermissions'
 
@@ -41,6 +41,11 @@ const footerNavItems: NavItem[] = [
     title: 'Painel de controle',
     href: '/dashboard',
     icon: LayoutGrid,
+  },
+  {
+    title: 'Validar Agendamento',
+    href: '/appointments/scan',
+    icon: Camera,
   },
   {
     title: 'Usuários',

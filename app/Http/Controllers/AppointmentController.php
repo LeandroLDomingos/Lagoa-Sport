@@ -110,4 +110,9 @@ class AppointmentController extends Controller
             ->with('flash.success', 'Appointment deleted successfully.');
     }
 
+    public function scan()
+    {
+        return Inertia::render('appointments/Scan');
+    }
+    
 }

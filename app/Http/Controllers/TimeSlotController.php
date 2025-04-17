@@ -31,19 +31,20 @@ class TimeSlotController extends Controller
                 // Verifica se o horário é no futuro
                 $slotDateTime = Carbon::parse($date->toDateString() . ' ' . $startTime);
                 if ($slotDateTime->isPast()) {
-                    continue;
+                    continue; // Ignora horários no passado
                 }
 
+                // Verifica se já existe um slot no banco de dados
                 $existingSlot = TimeSlot::with('appointment')
                     ->where('location_id', $location->id)
                     ->where('date', $date->toDateString())
                     ->where('start_time', $startTime)
                     ->where('end_time', $endTime)
                     ->first();
-
                 if ($existingSlot) {
                     $allSlots[] = $existingSlot;
                 } else {
+                    // Slot ainda não existe, mas queremos exibir como indisponível
                     $allSlots[] = new TimeSlot([
                         'id' => null,
                         'location_id' => $location->id,
@@ -55,6 +56,7 @@ class TimeSlotController extends Controller
                 }
             }
         }
+
 
         $weekOptions = collect(range(0, 3))->map(function ($weekOffset) {
             $start = now()->startOfWeek(Carbon::MONDAY)->addWeeks($weekOffset);
@@ -110,7 +112,7 @@ class TimeSlotController extends Controller
         $slot->delete();
 
         return to_route('appointments.index')
-        ->with('flash.success', 'Horário excluido com sucesso!');
+            ->with('flash.success', 'Horário excluido com sucesso!');
     }
 
 

@@ -4,6 +4,8 @@ use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TimeSlotController;
 
+Route::get('/appointments/scan', [AppointmentController::class, 'scan'])->name('appointments.scan');
+
 Route::get('/locations/{location}/timeslots', [TimeSlotController::class, 'index'])
     ->name('timeslots.index');
 
@@ -26,5 +28,5 @@ Route::post('/appointments', [AppointmentController::class, 'store'])
 Route::get('/appointments/{id}', [AppointmentController::class, 'create'])
     ->name('appointments.create');
 
-    Route::get('/appointments/voucher/{id}', [AppointmentController::class, 'voucher'])
+Route::get('/appointments/voucher/{id}', [AppointmentController::class, 'voucher'])
     ->name('appointments.voucher');
