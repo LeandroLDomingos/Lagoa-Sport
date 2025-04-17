@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->enum('status', ['active', 'inactive', 'pending','is_analising', 'blocked']);
-            $table->timestamp('approved_at')->nullable()->after('status');
+            $table->timestamp('approved_at')->nullable();
             $table->boolean('term');            
             $table->rememberToken();
             $table->timestamps();
