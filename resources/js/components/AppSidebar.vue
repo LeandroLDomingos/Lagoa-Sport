@@ -49,6 +49,11 @@ const footerNavItems: NavItem[] = [
     permission: 'users.index',
     children: [
       {
+        title: 'Listar Usuários',
+        href: '/users',
+        permission: 'users.analising',
+      },
+      {
         title: 'Aprovar Usuários',
         href: '/users/analising',
         permission: 'users.analising',

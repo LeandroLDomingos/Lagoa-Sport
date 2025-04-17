@@ -40,7 +40,7 @@ const props = defineProps<{
           class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
           <h2 class="text-xl font-semibold mb-2">Quantidade de Usuários</h2>
           <p class="text-3xl font-bold text-primary">
-            {{ props.users }}
+            <a href="users">{{ props.users }}</a>
           </p>
         </div>
         <div
