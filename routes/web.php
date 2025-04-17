@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Middleware\ACLMiddleware;
 use App\Http\Middleware\CheckUserValidation;
 use Illuminate\Support\Facades\Route;

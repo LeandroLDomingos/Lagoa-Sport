@@ -103,7 +103,7 @@ function isPdf(path: string): boolean {
       v-if="showModal && selectedDocument"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div class="p-6 rounded shadow-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto relative">
+      <div class="p-6 rounded shadow-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto relative bg-white">
         <h3 class="text-xl font-bold mb-4">{{ selectedDocument.type_label }}</h3>
 
         <!-- Endereço apenas para residence_proof -->

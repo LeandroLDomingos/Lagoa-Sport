@@ -27,23 +27,24 @@ class TimeSlotController extends Controller
             foreach ($defaultHours as $hour) {
                 $startTime = sprintf('%02d:00:00', $hour);
                 $endTime = sprintf('%02d:00:00', $hour + 1);
-        
+
                 // Verifica se o horário é no futuro
                 $slotDateTime = Carbon::parse($date->toDateString() . ' ' . $startTime);
                 if ($slotDateTime->isPast()) {
-                    continue;
+                    continue; // Ignora horários no passado
                 }
-                
-                $existingSlot = TimeSlot::with('appointment.user')
+
+                // Verifica se já existe um slot no banco de dados
+                $existingSlot = TimeSlot::with('appointment')
                     ->where('location_id', $location->id)
                     ->where('date', $date->toDateString())
                     ->where('start_time', $startTime)
                     ->where('end_time', $endTime)
                     ->first();
-        
                 if ($existingSlot) {
                     $allSlots[] = $existingSlot;
                 } else {
+                    // Slot ainda não existe, mas queremos exibir como indisponível
                     $allSlots[] = new TimeSlot([
                         'id' => null,
                         'location_id' => $location->id,
@@ -55,7 +56,8 @@ class TimeSlotController extends Controller
                 }
             }
         }
-        
+
+
         $weekOptions = collect(range(0, 3))->map(function ($weekOffset) {
             $start = now()->startOfWeek(Carbon::MONDAY)->addWeeks($weekOffset);
             $end = (clone $start)->endOfWeek(weekEndsAt: Carbon::SUNDAY);
@@ -83,7 +85,7 @@ class TimeSlotController extends Controller
             'slots.*.start_time' => 'required|date_format:H:i:s',
             'slots.*.end_time' => 'required|date_format:H:i:s|after:slots.*.start_time',
         ]);
-    
+
         // Processar cada slot
         foreach ($data['slots'] as $slotData) {
             TimeSlot::firstOrCreate([
@@ -95,10 +97,24 @@ class TimeSlotController extends Controller
                 'is_available' => true,
             ]);
         }
-    
+
         return to_route('appointments.index')
-        ->with('flash.success', 'Horários liberados com sucesso!');
+            ->with('flash.success', 'Horários liberados com sucesso!');
     }
-    
+
+    public function destroy($id)
+    {
+        $slot = TimeSlot::findOrFail($id);
+        if (!$slot->is_available) {
+            return redirect()->back()->withErrors('Não é possível excluir um horário que já foi reservado.');
+        }
+
+        $slot->delete();
+
+        return to_route('appointments.index')
+            ->with('flash.success', 'Horário excluido com sucesso!');
+    }
+
+
 
 }

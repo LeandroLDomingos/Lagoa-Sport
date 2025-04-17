@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('time_slot_id')->constrained()->onDelete('cascade');
             $table->string('notes')->nullable();
             $table->timestamps();
         });
