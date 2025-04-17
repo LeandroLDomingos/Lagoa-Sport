@@ -10,12 +10,8 @@ class CreateAppointmentTimeSlotTable extends Migration
     {
         Schema::create('appointment_time_slot', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('appointment_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
-            $table->foreignId('time_slot_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+            $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');
+            $table->foreign('time_slots_id')->references('id')->on('time_slots')->onDelete('cascade');
             $table->timestamps();
         });
     }
